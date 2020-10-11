@@ -79,6 +79,7 @@ class OtherMethod {
 		@SuppressWarnings("resource")
 		Scanner scannerPasswd = new Scanner(System.in);
 		String password = scannerPasswd.next();
+		//检测p是否在list集合内
 		for (Person p : list) {
 			if (id.equals(p.getUserID()) && password.equals(p.getPasswd())) {
 				return p;
@@ -90,7 +91,7 @@ class OtherMethod {
 	// 积分累积函数
 	public void scoreAccumlation(ArrayList<Person> list) {
 		Person p = checkPerson(list);
-		if (p != null) {
+		if (list.contains(p)) {
 			System.out.print("请输入您此次消费金额（消费1元累计1积分）：");
 			@SuppressWarnings("resource")
 			Scanner scannerScore = new Scanner(System.in);
@@ -106,12 +107,12 @@ class OtherMethod {
 	// 积分兑换函数
 	public void scoreExchange(ArrayList<Person> list) {
 		Person p = checkPerson(list);
-		if (p != null) {
+		if (list.contains(p)) {
 			System.out.print("请输入您需要兑换使用的积分（100积分抵用0.1元，不足100的积分不做抵用）：");
 			@SuppressWarnings("resource")
 			Scanner scannerScore = new Scanner(System.in);
 			int score = scannerScore.nextInt();
-			if (p.getScore() >= 100 && score >= 100 && score <= p.getScore()) {
+			if (p.getScore() >= 100 && score >= 100 && score/100 <= p.getScore()) {
 				p.setScore(p.getScore() - score / 100);
 				System.out.println("您的消费金额中使用会用积分抵消" + score / 100 + "元");
 				System.out.println("积分兑换成功！\n目前你的积分为：" + p.getScore());
@@ -124,24 +125,26 @@ class OtherMethod {
 		} else {
 			System.out.println("账号信息不匹配，操作失败");
 		}
+		chooseFunction(list);
 	}
 
 	// 查询积分及信息函数
 	public void queryResidualScore(ArrayList<Person> list) {
 		Person p = checkPerson(list);
-		if (p != null) {
+		if (list.contains(p)) {
 			System.out.println("姓名\t会员卡号\t剩余积分\t开卡日期");
 			System.out.println(p.getName() + "\t" + p.getUserID() + "\t" + p.getScore() + "\t" + p.getDate());
 			chooseFunction(list);
 		} else {
 			System.out.println("账号信息不匹配，操作失败");
 		}
+		chooseFunction(list);
 	}
 
 	// 修改密码函数
 	public void changePassed(ArrayList<Person> list) {
 		Person p = checkPerson(list);
-		if (p != null) {
+		if (list.contains(p)) {
 			System.out.print("请输入您的新密码：");
 			@SuppressWarnings("resource")
 			Scanner scannerNewPasswd = new Scanner(System.in);
@@ -152,6 +155,7 @@ class OtherMethod {
 		} else {
 			System.out.println("账号信息不匹配，操作失败");
 		}
+		chooseFunction(list);
 	}
 
 	// 开卡函数
@@ -171,16 +175,17 @@ class OtherMethod {
 			Scanner scannerNewPasswdTrue = new Scanner(System.in);
 			NewPasswd = scannerNewPasswdTrue.next();
 		}
-
+		//以一定格式获取当前时间
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date(System.currentTimeMillis());
 		System.out.println(formatter.format(date));
-
+		//随机数产生会员卡号
 		StringBuilder newUserID = new StringBuilder();
 		Random random = new Random();
 		for (int i = 0; i < 8; i++) {
 			newUserID.append(random.nextInt(10));
 		}
+		//检测产生的会员卡号是否在list集合内存在
 		String NewUserIDT = newUserID.toString();
 		for (Person p : list) {
 			if (p.getUserID() == NewUserIDT) {
