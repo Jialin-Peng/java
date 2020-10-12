@@ -13,18 +13,21 @@ class Person {
 	private String passwd;
 	private int score;
 	private Date date;
+	private String gift;
 
 	public Person() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public Person(String name, String userID, String passwd, int score, Date date) {
+	public Person(String name, String userID, String passwd, int score, Date date, String gift) {
 		super();
 		this.name = name;
 		this.userID = userID;
 		this.passwd = passwd;
 		this.score = score;
 		this.date = date;
+		this.gift = gift;
 	}
 
 	public String getName() {
@@ -63,9 +66,18 @@ class Person {
 		return date;
 	}
 
-	public void setData(Date date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
+
+	public String getGift() {
+		return gift;
+	}
+
+	public void setGift(String gift) {
+		this.gift = gift;
+	}
+
 }
 
 class OtherMethod {
@@ -79,7 +91,7 @@ class OtherMethod {
 		@SuppressWarnings("resource")
 		Scanner scannerPasswd = new Scanner(System.in);
 		String password = scannerPasswd.next();
-		//检测p是否在list集合内
+		// 检测p是否在list集合内
 		for (Person p : list) {
 			if (id.equals(p.getUserID()) && password.equals(p.getPasswd())) {
 				return p;
@@ -112,7 +124,7 @@ class OtherMethod {
 			@SuppressWarnings("resource")
 			Scanner scannerScore = new Scanner(System.in);
 			int score = scannerScore.nextInt();
-			if (p.getScore() >= 100 && score >= 100 && score/100 <= p.getScore()) {
+			if (p.getScore() >= 100 && score >= 100 && score / 100 <= p.getScore()) {
 				p.setScore(p.getScore() - score / 100);
 				System.out.println("您的消费金额中使用会用积分抵消" + score / 100 + "元");
 				System.out.println("积分兑换成功！\n目前你的积分为：" + p.getScore());
@@ -158,6 +170,90 @@ class OtherMethod {
 		chooseFunction(list);
 	}
 
+	// 兑换礼品
+
+	String gift = new String();
+
+	public void exchangeGift(ArrayList<Person> list) {
+		Person p = checkPerson(list);
+		if (list.contains(p)) {
+			System.out.print("可兑换礼品列表：\n1.2000积分兑换一支佳洁士牙膏\n" + "2.2500兑换一袋(小)雕牌洗衣粉\n" + "3.2500兑换一支电动牙刷\n"
+					+ "4.3000兑换一瓶洗衣液(1L)\n" + "5.3500兑换一袋(大)雕牌洗衣粉\n" + "6.4000兑换一把飞科剃须刀\n" + "7.查看已兑换的礼品\n" + "8.取消\n");
+			System.out.print("请输入数字选择你要兑换的礼品：");
+			@SuppressWarnings("resource")
+			Scanner scannerNumber = new Scanner(System.in);
+			int n = scannerNumber.nextInt();
+			switch (n) {
+			case 1:
+				if (p.getScore() >= 2000) {
+					p.setScore(p.getScore() - 2000);
+					gift = gift + "一支佳洁士牙膏\n";
+					System.out.println("成功兑换一支佳洁士牙膏");
+				} else {
+					System.out.println("积分不足，兑换失败");
+				}
+				break;
+			case 2:
+				if (p.getScore() >= 2500) {
+					p.setScore(p.getScore() - 2500);
+					gift = gift + "一袋(小)雕牌洗衣粉\n";
+					System.out.println("成功兑换一袋(小)雕牌洗衣粉");
+				} else {
+					System.out.println("积分不足，兑换失败");
+				}
+				break;
+			case 3:
+				if (p.getScore() >= 2500) {
+					p.setScore(p.getScore() - 2500);
+					gift = gift + "一支电动牙刷\n";
+					System.out.println("成功兑换一支电动牙刷");
+				} else {
+					System.out.println("积分不足，兑换失败");
+				}
+				break;
+			case 4:
+				if (p.getScore() >= 3000) {
+					p.setScore(p.getScore() - 3000);
+					gift = gift + "一瓶洗衣液(1L)\n";
+					System.out.println("成功兑换一瓶洗衣液(1L)");
+				} else {
+					System.out.println("积分不足，兑换失败");
+				}
+				break;
+			case 5:
+				if (p.getScore() >= 3500) {
+					p.setScore(p.getScore() - 3500);
+					gift = gift + "一袋(大)雕牌洗衣粉\n";
+					System.out.println("成功兑换一袋(大)雕牌洗衣粉");
+				} else {
+					System.out.println("积分不足，兑换失败");
+				}
+				break;
+			case 6:
+				if (p.getScore() >= 4000) {
+					p.setScore(p.getScore() - 4000);
+					gift = gift + "一把飞科剃须刀\n";
+					System.out.println("成功兑换一把飞科剃须刀");
+				} else {
+					System.out.println("积分不足，兑换失败");
+				}
+				break;
+			case 7:
+				p.setGift(gift);
+				System.out.println("会员卡" + p.getUserID() + "已成功兑换下列礼品\n" + p.getGift());
+				break;
+			case 8:
+				exit();
+				break;
+			default:
+				System.out.println("输入有误，请重新进行操作");
+			}
+		} else {
+			System.out.println("账号信息不匹配，操作失败");
+		}
+		chooseFunction(list);
+	}
+
 	// 开卡函数
 	public void openCard(ArrayList<Person> list) {
 
@@ -175,17 +271,17 @@ class OtherMethod {
 			Scanner scannerNewPasswdTrue = new Scanner(System.in);
 			NewPasswd = scannerNewPasswdTrue.next();
 		}
-		//以一定格式获取当前时间
+		// 以一定格式获取当前时间
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date(System.currentTimeMillis());
 		System.out.println(formatter.format(date));
-		//随机数产生会员卡号
+		// 随机数产生会员卡号
 		StringBuilder newUserID = new StringBuilder();
 		Random random = new Random();
 		for (int i = 0; i < 8; i++) {
 			newUserID.append(random.nextInt(10));
 		}
-		//检测产生的会员卡号是否在list集合内存在
+		// 检测产生的会员卡号是否在list集合内存在
 		String NewUserIDT = newUserID.toString();
 		for (Person p : list) {
 			if (p.getUserID() == NewUserIDT) {
@@ -196,10 +292,28 @@ class OtherMethod {
 				}
 			}
 		}
-		list.add(new Person(NewName, NewUserIDT, NewPasswd, 100, date));
+		list.add(new Person(NewName, NewUserIDT, NewPasswd, 100, date, ""));
 		System.out.println("恭喜，开通会员卡成功，系统赠送您100积分！您的会员卡号为：" + NewUserIDT);
-		System.out.print("姓名：" + NewName + "\n会员卡号：" + NewUserIDT + "\n剩余积分（开卡默认100积分）：" + 100 + "\n开卡时间：" + date);
+		System.out.println("姓名：" + NewName + "\n会员卡号：" + NewUserIDT + "\n剩余积分（开卡默认100积分）：" + 100 + "\n开卡时间：" + date);
 		chooseFunction(list);
+	}
+
+	// 清除会员
+	public void dropCard(ArrayList<Person> list) {
+		Person p = checkPerson(list);
+		if (list.contains(p)) {
+			list.remove(p);
+			System.out.println("会员卡账号已成功删除");
+		} else {
+			System.out.println("账号信息不匹配，操作失败");
+		}
+		chooseFunction(list);
+
+	}
+
+	// 退出函数
+	public void exit() {
+		System.out.println("已成功退出");
 	}
 
 	// 功能函数
@@ -227,7 +341,15 @@ class OtherMethod {
 		case 5:
 			openCard(list);
 			break;
-		//case 6:exit();break;
+		case 6:
+			dropCard(list);
+			break;
+		case 7:
+			exchangeGift(list);
+			break;
+		case 8:
+			exit();
+			break;
 		default:
 			System.out.println("输入有误，请重新输入！！！");
 			chooseFunction(list);
@@ -239,14 +361,15 @@ public class TestDemo {
 	public static void main(String[] args) {
 		System.out.println(
 				"************************************************欢迎进入超市会员管理系统*************************************");
-		System.out.println("1.积分累计\t2.积分兑换\t3.查询剩余积分\t修改密码\t5.开卡\t6.退出");
+		System.out.println("1.积分累计\t2.积分兑换\t3.查询剩余积分\t4.修改密码\t5.开卡\t6.删除会员卡账号\t7.兑换礼品\t8.退出");
 		System.out.println(
-				"************************************************************************************************************");
+				"*****************************************************************************************************");
 		ArrayList<Person> list = new ArrayList<Person>();
 		@SuppressWarnings("unused")
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date(System.currentTimeMillis());
-		list.add(new Person("张三", "12345678", "12345678", 1000, date));
+		list.add(new Person("张三", "12345678", "12345678", 10000, date, ""));
+		list.add(new Person("李四", "12345679", "12345679", 1000, date, ""));
 		new OtherMethod().chooseFunction(list);
 	}
 }
